@@ -1,0 +1,45 @@
+version: '3.9'
+services:
+   services:
+      web:
+        build:
+          context: ./web
+        ports:
+          - 80:80
+        volumes:
+          - myhtmlcode:/usr/share/nginx/html
+          - mynginxconf:/etc/nginx/conf.d/
+        networks:
+          - webnet
+      app:
+        build:
+          context: ./app
+        ports:
+          - 80
+        volumes:
+          - myphpcode:/usr/share/nginx/html
+        networks:
+          - webnet
+          - appnet
+
+      db:
+        image: mysql
+        ports:
+          - 3306
+        volumes:
+          - databackup:/var/lib/sql
+        networks:
+          - appnet
+
+networks:
+  webnet:
+    driver: bridge
+  appnet:
+    driver: bridge
+
+volumes:
+  datbackup:
+  myphpcode:
+  myhtmlcode:
+  mynginxconf:
+        
